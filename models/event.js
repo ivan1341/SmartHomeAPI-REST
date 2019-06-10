@@ -1,4 +1,6 @@
-import { schema, model } from 'mongoose';
+const mongose = require ('mongoose');
+
+const schema = mongose.schema;
 
 var eventSchema = new schema({
   sensor:{

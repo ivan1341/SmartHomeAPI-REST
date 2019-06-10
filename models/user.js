@@ -1,36 +1,37 @@
-import { Schema, model } from 'mongoose';
-import { hashSync, genSaltSync, compareSync } from 'bcryptjs';
+const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs');
 
-var schema = Schema;
+var schema = mongoose.Schema;
 
 var userSchema = new schema({
-    id:{
-        type: Number,
-        require: true
+    username:{
+        type:String,
+        required:true,
     },
     password: {
         type: String,
         required: true,
     },
     isAdmin: { type: Boolean,
+         default: false
+         },
+    failsAttempts : {
+        type: Number,
+        default: 0
+    },
+    isBlocked : {
+        type: Boolean,
         default: false
-        },
-   failsAttempts : {
-       type: Number,
-       default: 0
-   },
-   isBlocked : {
-       type: Boolean,
-       default: false
-   }
+    }
+    
 })
 
-userSchema.methods.hashPassword = (password) => {
-    return hashSync(password, genSaltSync(10));
-} 
-
-userSchema.methods.comparePassword = (password, hash) => {
-    return compareSync(password,hash);
+userSchema.methods.hashPassword = function (password) {
+    return bcrypt.hashSync(password,bcrypt.genSaltSync(10))
 }
 
-export default model('users', userSchema, 'users');
+userSchema.methods.comparePassword = function (password,hash) {
+    return bcrypt.compareSync(password,hash)
+}
+
+module.exports = mongoose.model('users',userSchema,'users');
