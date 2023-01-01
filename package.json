@@ -21,6 +21,6 @@
     "passport-facebook": "^3.0.0",
     "passport-local": "^1.0.0",
     "react": "^16.8.6",
-    "webpack": "^4.30.0"
+    "webpack": "^5.75.0"
   }
 }
